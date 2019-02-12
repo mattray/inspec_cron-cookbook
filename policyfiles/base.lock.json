@@ -1,0 +1,92 @@
+{
+  "revision_id": "b2abd454bb661aab151ddb193f8b64f1fd6e4e9f26af28d05474c77451635ae0",
+  "name": "base",
+  "run_list": [
+    "recipe[inspec-cron::default]"
+  ],
+  "included_policy_locks": [
+
+  ],
+  "cookbook_locks": {
+    "audit": {
+      "version": "7.4.0",
+      "identifier": "c7645043f08667e3c53541e38126a54ba93654a3",
+      "dotted_decimal_identifier": "56123816265418343.64111652242686246.181744380040355",
+      "cache_key": "audit-7.4.0-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/audit/versions/7.4.0/download",
+      "source_options": {
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/audit/versions/7.4.0/download",
+        "version": "7.4.0"
+      }
+    },
+    "inspec-cron": {
+      "version": "0.1.0",
+      "identifier": "653da3d246ffbdcb8bd096cb1bc91127accb0786",
+      "dotted_decimal_identifier": "28496746464608189.57293148271614921.18862100383622",
+      "source": "..",
+      "cache_key": null,
+      "scm_info": {
+        "scm": "git",
+        "remote": "git@github.com:mattray/home-directory.git",
+        "revision": "bc1f9fcd5b34ce21e50560ce8f8c493d72b876b1",
+        "working_tree_clean": false,
+        "published": true,
+        "synchronized_remote_branches": [
+          "origin/master"
+        ]
+      },
+      "source_options": {
+        "path": ".."
+      }
+    }
+  },
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+    "chef_client": {
+      "config": {
+        "data_collector.server_url": "https://ndnd/data-collector/v0/",
+        "data_collector.token": "8ZzgdoqAPRWsW4XOHRiFx7Kbobk="
+      }
+    },
+    "audit": {
+      "reporter": "chef-automate",
+      "inspec_version": "3.6.6",
+      "profiles": {
+        "linux-patch-baseline": {
+          "url": "https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip"
+        }
+      }
+    },
+    "inspec-cron": {
+      "cron": {
+        "minute": "*/5",
+        "hour": "*"
+      }
+    }
+  },
+  "solution_dependencies": {
+    "Policyfile": [
+      [
+        "audit",
+        "= 7.4.0"
+      ],
+      [
+        "inspec-cron",
+        ">= 0.0.0"
+      ]
+    ],
+    "dependencies": {
+      "audit (7.4.0)": [
+
+      ],
+      "inspec-cron (0.1.0)": [
+        [
+          "audit",
+          "~> 7.4"
+        ]
+      ]
+    }
+  }
+}
