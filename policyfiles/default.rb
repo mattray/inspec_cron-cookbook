@@ -20,6 +20,10 @@ default['inspec-cron']['profiles'] = {
     'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz',
     'minute': '45',
   },
+  'uptime': {
+    'url': 'https://github.com/mattray/uptime-profile'
+  },
 }
 
 default['inspec-cron']['cron']['hour'] = '*/4'
+default['inspec-cron']['insecure'] = true

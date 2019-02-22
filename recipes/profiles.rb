@@ -5,28 +5,42 @@
 
 include_recipe 'audit::inspec'
 
-# switch to ['inspec-cron']['profiles'] some day with the cron schedule
-profiles = node['audit']['profiles']
+splay = 0
 
-profiles.keys.each do |profile|
+node['inspec-cron']['profiles'].each do |name, profile|
+  # sort out the command
   command = node['inspec-cron']['inspec']['path']
-  # throw some logic in here about how we're getting profiles
-  command += " exec #{profiles[profile]['url']}"
-  # command += " exec #{profile['compliance']}"
-  # command += " exec #{profile['path']}"# ???
-  # command += " exec #{profile['git']}"# ???
-  command += ' --json-config /etc/chef/inspec.json'
+  command += " exec #{profile['url']}"
+  command += " --json-config #{node['inspec-cron']['conf_dir']}/#{node['inspec-cron']['conf_file']}"
 
-  # at some point we could put the cron schedule into the hash
+  # sort out the cron schedule
+  # set to the defaults
   minute = node['inspec-cron']['cron']['minute']
   hour = node['inspec-cron']['cron']['hour']
   day = node['inspec-cron']['cron']['day']
+  weekday = node['inspec-cron']['cron']['weekday']
+  month = node['inspec-cron']['cron']['month']
+  # if the profile hash sets anything, blank all the of the fields
+  if profile['minute'] or profile['hour'] or profile['day'] or profile['weekday'] or profile['month']
+    minute = '*'
+    hour = '*'
+    day = '*'
+    weekday = '*'
+    month = '*'
+  end
+  minute = profile['minute'] if profile['minute']
+  hour = profile['hour'] if profile['hour']
+  day = profile['day'] if profile['day']
+  weekday = profile['weekday'] if profile['weekday']
+  month = profile['month'] if profile['month']
 
   # create the cron job
-  cron 'inspec' do
+  cron name do
     command command
     minute minute
     hour hour
     day day
+    weekday weekday
+    month month
   end
 end
