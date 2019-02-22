@@ -24,11 +24,11 @@ Automate URL and token for reporting.
 
 ## default
 
-This includes the `inspec-json` and `profiles` recipes. They are separate in case you do not wish to generate an inspec.json file and will rely on the Chef client.rb.
+This includes the `inspec-json` and `profiles` recipes. They are separate in case you do not wish to generate an inspec.json file.
 
 ## inspec-json
 
-Writes out an `inspec.json` configuration file to the `node['inspec-cron']['conf_dir']`.
+Writes out `/etc/chef/inspec.json` configuration file, templatized with the relevant attributes. The location and filename may be overridden with `node['inspec-cron']['conf_dir']` and `node['inspec-cron']['conf_file']` respectively.
 
 ## profiles
 

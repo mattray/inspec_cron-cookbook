@@ -34,7 +34,7 @@ insecure = if node['inspec-cron']['insecure'].nil?
 directory dir
 
 # write the inspec.json
-template "#{dir}/inspec.json" do
+template "#{dir}/#{node['inspec-cron']['conf_file']}" do
   source 'inspec.json.erb'
   mode '0700'
   variables(environment: node['chef_environment'],
