@@ -5,7 +5,6 @@ driver:
 provisioner:
   name: chef_zero
   always_update_cookbooks: true
-  policyfile: policyfiles/base.rb
 
 verifier:
   name: inspec
@@ -15,9 +14,14 @@ platforms:
 
 suites:
   - name: default
-    run_list:
-      - recipe[inspec-cron::default]
+    provisioner:
+      policyfile: policyfiles/default.rb
     verifier:
       inspec_tests:
         - test/integration/default
-    attributes:
+  - name: conf
+    provisioner:
+      policyfile: policyfiles/conf.rb
+    verifier:
+      inspec_tests:
+        - test/integration/conf
