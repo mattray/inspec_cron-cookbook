@@ -4,7 +4,7 @@ maintainer_email 'matt@chef.io'
 license 'Apache-2.0'
 description 'Installs/Configures inspec-cron'
 long_description 'Installs/Configures inspec-cron'
-version '0.1.0'
+version '0.2.0'
 chef_version '>= 13.0'
 
 supports 'centos'
