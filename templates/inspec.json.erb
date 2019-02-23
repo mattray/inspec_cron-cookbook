@@ -2,10 +2,10 @@
     "reporter" : {
         "automate" : {
             "environment" : "<%= @environment %>",
-            "insecure" : true,
+            "insecure" : <%= @insecure %>,
             "node_name" : "<%= @node_name %>",
             "node_uuid": "<%= @node_uuid %>",
-            "stdout" : "false",
+            "stdout" : false,
             "token" : "<%= @token %>",
             "url" : "<%= @url %>"
         }
