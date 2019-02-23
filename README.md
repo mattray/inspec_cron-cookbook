@@ -58,30 +58,23 @@ default['inspec-cron']['profiles'] = {
 
 Which produces cron entries like this:
 
-## bastion
+
+    # Chef Name: linux-patch-baseline
+    15 */6 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json
+    # Chef Name: ssh-baseline
+    45 * * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json
+
+# NEXT STEPS
+
+## bastion recipe
 
 This recipe configures the node as an InSpec bastion node to scan other machines. It iterates over a hash of IP address or hostnames with settings specific to the node and a hash of the profiles and settings to use
 
-inspec exec https://github.com/mattray/uptime-profile -t ssh://mattray@ndnd -i ~/.ssh/id_rsa
-inspec exec https://github.com/mattray/uptime-profile.git -t ssh://mattray@ndnd -i ~/.ssh/id_rsa
-inspec exec https://github.com/mattray/uptime-profile
-/opt/chef/embedded/bin/inspec exec https://github.com/mattray/uptime-profile --reporter automate
-/opt/chef/embedded/bin/inspec exec https://github.com/mattray/uptime-profile --config config.json
+ Report to Automate via Chef Server
+ # NOTE: Must have Compliance Integrated w/ Chef Server
+ ['audit']['reporter'] = 'chef-server-automate'
+ ['audit']['fetcher'] = 'chef-server'
 
-Report to Automate via Chef Server
-# NOTE: Must have Compliance Integrated w/ Chef Server
-['audit']['reporter'] = 'chef-server-automate'
-['audit']['fetcher'] = 'chef-server'
-
-{
-    'reporter' : {
-        'automate' : {
-            'token' : '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=',
-        }
-    }
-}
-            'node_name' : 'testing',
-
-            'stdout' : 'false',
-            'insecure' : false,
-            'environment' : 'dev'
+## alternate reporters
+The inspec.json can be configured to direct output through a Chef server on to Automate, negating the need for direct Automate access by nodes.
+https://github.com/chef-cookbooks/audit/blob/master/docs/supported_configuration.md
