@@ -32,7 +32,7 @@ Writes out `/etc/chef/inspec.json` configuration file, templatized with the rele
 
 ## profiles
 
-This recipe iterates over a hash of compliance profiles and their settings to create cron jobs to `inspec exec` them. The default is to run every 12 hours, but you may provide your own cron schedule within the hash or override the defaults. If you are running multiple profiles with the same start consider setting the `node['inspec-cron']['splay']` to spread them out.
+This recipe iterates over a hash of compliance profiles and their settings to create cron jobs to `inspec exec` them. The default is to run every 12 hours, but you may provide your own cron schedule within the hash or override the defaults.
 
     node['inspec-cron']['cron']['minute'] = '0'
     node['inspec-cron']['cron']['hour'] = '*/12'
@@ -64,17 +64,42 @@ Which produces cron entries like this:
     # Chef Name: ssh-baseline
     45 * * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json
 
+## targets
+
+This recipe configures the node to scan other machines with InSpec profiles. It iterates over a hash of hosts with settings specific to the node and a hash of the profiles and settings to use. Here is an example of a hash for scanning 2 nodes with 2 profiles with their own cron settings.
+
+```ruby
+default['inspec-cron']['targets] = {
+
+  'linux-patch-baseline': {
+    'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip',
+    'minute': '15',
+    'hour': '*/6'
+  },
+  'ssh-baseline': {
+    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz',
+    'minute': '45'
+  }
+
+  'linux-patch-baseline': {
+    'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip',
+    'minute': '15',
+    'hour': '*/6'
+  },
+  'ssh-baseline': {
+    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz',
+    'minute': '45'
+  }
+
+}
+
+
 # NEXT STEPS
-
-## bastion recipe
-
-This recipe configures the node as an InSpec bastion node to scan other machines. It iterates over a hash of IP address or hostnames with settings specific to the node and a hash of the profiles and settings to use
-
+## alternate reporters
  Report to Automate via Chef Server
  # NOTE: Must have Compliance Integrated w/ Chef Server
  ['audit']['reporter'] = 'chef-server-automate'
  ['audit']['fetcher'] = 'chef-server'
 
-## alternate reporters
 The inspec.json can be configured to direct output through a Chef server on to Automate, negating the need for direct Automate access by nodes.
 https://github.com/chef-cookbooks/audit/blob/master/docs/supported_configuration.md

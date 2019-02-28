@@ -5,8 +5,6 @@
 
 include_recipe 'audit::inspec'
 
-splay = 0
-
 node['inspec-cron']['profiles'].each do |name, profile|
   # sort out the command
   command = node['inspec-cron']['inspec']['path']
