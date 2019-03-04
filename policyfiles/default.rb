@@ -8,7 +8,7 @@ run_list 'chef-client::config', 'inspec-cron::default'
 
 default['chef_client']['config']['data_collector.server_url'] = 'https://ndnd/data-collector/v0/'
 default['chef_client']['config']['data_collector.token'] = '8ZzgdoqAPRWsW4XOHRiFx7Kbobk='
-default['audit']['inspec_version'] = '3.6.6'
+default['audit']['inspec_version'] = '3.7.1'
 
 default['inspec-cron']['profiles'] = {
   'linux-patch-baseline': {

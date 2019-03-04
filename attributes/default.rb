@@ -33,3 +33,7 @@ end
 default['inspec-cron']['insecure'] = node['audit']['insecure']
 
 default['inspec-cron']['profiles'] = {}
+
+# defaults for targets
+default['inspec-cron']['targets'] = {}
+default['inspec-cron']['environment'] = '_default'
