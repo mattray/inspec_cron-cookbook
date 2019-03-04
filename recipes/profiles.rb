@@ -19,7 +19,7 @@ node['inspec-cron']['profiles'].each do |name, profile|
   weekday = node['inspec-cron']['cron']['weekday']
   month = node['inspec-cron']['cron']['month']
   # if the profile hash sets anything, blank all the of the fields
-  if profile['minute'] or profile['hour'] or profile['day'] or profile['weekday'] or profile['month']
+  if profile['minute'] || profile['hour'] || profile['day'] || profile['weekday'] || profile['month']
     minute = '*'
     hour = '*'
     day = '*'

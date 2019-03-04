@@ -19,29 +19,29 @@ default['inspec-cron']['targets'] = {
     'token': 'vWswevpNZb7OXJ0jXF11TYxbHZE=',
     'profiles': {
       'linux-patch-baseline': {
-        'url': 'https://github.com/dev-sec/linux-patch-baseline/'
+        'url': 'https://github.com/dev-sec/linux-patch-baseline/',
       },
       'uptime': {
         'url': 'https://github.com/mattray/uptime-profile',
-        'minute': '*/15'
-      }
-    }
+        'minute': '*/15',
+      },
+    },
   },
   '10.0.0.4': {
     'node_uuid': '11111111-2222-3333-4444-555555555555',
     'profiles': {
       'uptime': {
         'url': 'https://github.com/mattray/uptime-profile',
-        'minute': '*/7'
-      }
-    }
+        'minute': '*/7',
+      },
+    },
   },
   'ndnd': {
     'profiles': {
       'uptime': {
         'url': 'https://github.com/mattray/uptime-profile',
-        'minute': '*/10'
-      }
-    }
-  }
+        'minute': '*/10',
+      },
+    },
+  },
 }

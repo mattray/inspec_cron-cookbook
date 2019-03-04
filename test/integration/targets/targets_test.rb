@@ -14,7 +14,6 @@ end
   describe file("/etc/chef/targets/#{target}-inspec.json") do
     it { should exist }
   end
-
 end
 
 describe file('/etc/chef/targets/10.0.0.3-node_uuid') do
@@ -22,36 +21,36 @@ describe file('/etc/chef/targets/10.0.0.3-node_uuid') do
 end
 
 describe json('/etc/chef/targets/10.0.0.3-inspec.json') do
-  its(['reporter', 'automate', 'environment']) { should eq 'foo' }
-  its(['reporter', 'automate', 'insecure']) { should eq true }
-  its(['reporter', 'automate', 'node_name']) { should eq '10.0.0.3' }
-  its(['reporter', 'automate', 'stdout']) { should eq false }
-  its(['reporter', 'automate', 'token']) { should eq 'vWswevpNZb7OXJ0jXF11TYxbHZE=' }
-  its(['reporter', 'automate', 'url']) { should eq 'https://ndnd/data-collector/v0/' }
+  its(%w(reporter automate environment)) { should eq 'foo' }
+  its(%w(reporter automate insecure)) { should eq true }
+  its(%w(reporter automate node_name)) { should eq '10.0.0.3' }
+  its(%w(reporter automate stdout)) { should eq false }
+  its(%w(reporter automate token)) { should eq 'vWswevpNZb7OXJ0jXF11TYxbHZE=' }
+  its(%w(reporter automate url)) { should eq 'https://ndnd/data-collector/v0/' }
 end
 
 describe file('/etc/chef/targets/10.0.0.4-node_uuid') do
 end
 
 describe json('/etc/chef/targets/10.0.0.4-inspec.json') do
-  its(['reporter', 'automate', 'environment']) { should eq '_default' }
-  its(['reporter', 'automate', 'insecure']) { should eq true }
-  its(['reporter', 'automate', 'node_name']) { should eq '10.0.0.4' }
-  its(['reporter', 'automate', 'stdout']) { should eq false }
-  its(['reporter', 'automate', 'token']) { should eq '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=' }
-  its(['reporter', 'automate', 'url']) { should eq 'https://ndnd/data-collector/v0/' }
+  its(%w(reporter automate environment)) { should eq '_default' }
+  its(%w(reporter automate insecure)) { should eq true }
+  its(%w(reporter automate node_name)) { should eq '10.0.0.4' }
+  its(%w(reporter automate stdout)) { should eq false }
+  its(%w(reporter automate token)) { should eq '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=' }
+  its(%w(reporter automate url)) { should eq 'https://ndnd/data-collector/v0/' }
 end
 
 describe file('/etc/chef/targets/ndnd-node_uuid') do
 end
 
 describe json('/etc/chef/targets/ndnd-inspec.json') do
-  its(['reporter', 'automate', 'environment']) { should eq '_default' }
-  its(['reporter', 'automate', 'insecure']) { should eq true }
-  its(['reporter', 'automate', 'node_name']) { should eq 'ndnd' }
-  its(['reporter', 'automate', 'stdout']) { should eq false }
-  its(['reporter', 'automate', 'token']) { should eq '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=' }
-  its(['reporter', 'automate', 'url']) { should eq 'https://ndnd/data-collector/v0/' }
+  its(%w(reporter automate environment)) { should eq '_default' }
+  its(%w(reporter automate insecure)) { should eq true }
+  its(%w(reporter automate node_name)) { should eq 'ndnd' }
+  its(%w(reporter automate stdout)) { should eq false }
+  its(%w(reporter automate token)) { should eq '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=' }
+  its(%w(reporter automate url)) { should eq 'https://ndnd/data-collector/v0/' }
 end
 
 # describe crontab do

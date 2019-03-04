@@ -21,7 +21,7 @@ default['inspec-cron']['profiles'] = {
     'minute': '45',
   },
   'uptime': {
-    'url': 'https://github.com/mattray/uptime-profile'
+    'url': 'https://github.com/mattray/uptime-profile',
   },
 }
 
