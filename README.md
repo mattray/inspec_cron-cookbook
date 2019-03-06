@@ -93,12 +93,30 @@ default['inspec-cron']['targets'] = {
 }
 ```
 
-# NEXT STEPS
-## alternate reporters
- Report to Automate via Chef Server
- # NOTE: Must have Compliance Integrated w/ Chef Server
- ['audit']['reporter'] = 'chef-server-automate'
- ['audit']['fetcher'] = 'chef-server'
+## Reporting to Automate via a Chef Server
 
-The inspec.json can be configured to direct output through a Chef server on to Automate, negating the need for direct Automate access by nodes.
-https://github.com/chef-cookbooks/audit/blob/master/docs/supported_configuration.md
+If you do not want nodes directly reporting to Automate and they use a Chef Server, you can have them proxy their reports through the Chef Server. In the Chef Server `config.rb`, set the following:
+
+    data_collector['root_url'] = 'https://your-chef-automate-server/data-collector/v0/'
+    data_collector['proxy'] = true
+
+This works without requiring authentication with the Chef Server, only the Automate token is required.
+
+## License and Authors
+
+- Author: Matt Ray [matt@chef.io](mailto:matt@chef.io)
+- Copyright 2019, Chef Software, Inc
+
+```text
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
