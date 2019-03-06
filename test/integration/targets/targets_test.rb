@@ -6,7 +6,7 @@ describe directory('/etc/chef/targets') do
   it { should exist }
 end
 
-%w(10.0.0.3 10.0.0.4 ndnd).each do |target|
+%w(10.0.0.2 10.0.0.3 10.0.0.4).each do |target|
   describe file("/etc/chef/targets/#{target}-node_uuid") do
     it { should exist }
   end
@@ -16,8 +16,17 @@ end
   end
 end
 
+describe json('/etc/chef/targets/10.0.0.2-inspec.json') do
+  its(%w(reporter automate environment)) { should eq '_default' }
+  its(%w(reporter automate insecure)) { should eq true }
+  its(%w(reporter automate node_name)) { should eq '10.0.0.2' }
+  its(%w(reporter automate stdout)) { should eq false }
+  its(%w(reporter automate token)) { should eq '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=' }
+  its(%w(reporter automate url)) { should eq 'https://ndnd/data-collector/v0/' }
+end
+
 describe file('/etc/chef/targets/10.0.0.3-node_uuid') do
-  its('content') { should match(/c0411e97-3976-410f-83a1-22ab3b40638c/) }
+  its('content') { should match(/aaaaaaaa-3976-410f-83a1-22ab3b40638c/) }
 end
 
 describe json('/etc/chef/targets/10.0.0.3-inspec.json') do
@@ -30,6 +39,7 @@ describe json('/etc/chef/targets/10.0.0.3-inspec.json') do
 end
 
 describe file('/etc/chef/targets/10.0.0.4-node_uuid') do
+  its('content') { should match(/11111111-2222-3333-4444-555555555555/) }
 end
 
 describe json('/etc/chef/targets/10.0.0.4-inspec.json') do
@@ -41,44 +51,52 @@ describe json('/etc/chef/targets/10.0.0.4-inspec.json') do
   its(%w(reporter automate url)) { should eq 'https://ndnd/data-collector/v0/' }
 end
 
-describe file('/etc/chef/targets/ndnd-node_uuid') do
+# Chef Name: 10.0.0.2::uptime
+# */10 * * * * /opt/inspec/bin/inspec exec https://github.com/mattray/uptime-profile -t ssh://test@10.0.0.2 --port=22 -i=/tmp/test.id_rsa --json-config /etc/chef/targets/10.0.0.2-inspec.json
+describe crontab.commands('/opt/inspec/bin/inspec exec https://github.com/mattray/uptime-profile -t ssh://test@10.0.0.2 --port=22 -i=/tmp/test.id_rsa --json-config /etc/chef/targets/10.0.0.2-inspec.json') do
+  its('minutes') { should cmp '*/10' }
+  its('hours') { should cmp '*' }
+  its('days') { should cmp '*' }
+  its('weekdays') { should cmp '*' }
+  its('months') { should cmp '*' }
 end
 
-describe json('/etc/chef/targets/ndnd-inspec.json') do
-  its(%w(reporter automate environment)) { should eq '_default' }
-  its(%w(reporter automate insecure)) { should eq true }
-  its(%w(reporter automate node_name)) { should eq 'ndnd' }
-  its(%w(reporter automate stdout)) { should eq false }
-  its(%w(reporter automate token)) { should eq '8ZzgdoqAPRWsW4XOHRiFx7Kbobk=' }
-  its(%w(reporter automate url)) { should eq 'https://ndnd/data-collector/v0/' }
+# Chef Name: 10.0.0.3::linux-patch-baseline
+# 0 */12 * * * /opt/inspec/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/ -t ssh://test@10.0.0.3 --port=22 --password=testing --sudo --json-config /etc/chef/targets/10.0.0.3-inspec.json
+describe crontab.commands('/opt/inspec/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/ -t ssh://test@10.0.0.3 --port=22 --password=testing --sudo --json-config /etc/chef/targets/10.0.0.3-inspec.json') do
+  its('minutes') { should cmp '0' }
+  its('hours') { should cmp '*/12' }
+  its('days') { should cmp '*' }
+  its('weekdays') { should cmp '*' }
+  its('months') { should cmp '*' }
 end
 
-# describe crontab do
-#   its('commands') { should include '/opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json' }
-#   its('commands') { should include '/opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json' }
-#   its('commands') { should include '/opt/chef/embedded/bin/inspec exec https://github.com/mattray/uptime-profile --json-config /etc/chef/inspec.json' }
-# end
+# Chef Name: 10.0.0.3::uptime
+# */5 * * * * /opt/inspec/bin/inspec exec https://github.com/mattray/uptime-profile -t ssh://test@10.0.0.3 --port=22 --password=testing --sudo --json-config /etc/chef/targets/10.0.0.3-inspec.json
+describe crontab.commands('/opt/inspec/bin/inspec exec https://github.com/mattray/uptime-profile -t ssh://test@10.0.0.3 --port=22 --password=testing --sudo --json-config /etc/chef/targets/10.0.0.3-inspec.json') do
+  its('minutes') { should cmp '*/5' }
+  its('hours') { should cmp '*' }
+  its('days') { should cmp '*' }
+  its('weekdays') { should cmp '*' }
+  its('months') { should cmp '*' }
+end
 
-# describe crontab.commands('/opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json') do
-#   its('minutes') { should cmp '15' }
-#   its('hours') { should cmp '*/6' }
-#   its('days') { should cmp '*' }
-#   its('weekdays') { should cmp '*' }
-#   its('months') { should cmp '*' }
-# end
+# Chef Name: 10.0.0.4::uptime
+# */7 * * * * /opt/inspec/bin/inspec exec https://github.com/mattray/uptime-profile -t ssh://test@10.0.0.4 --port=22 --password=testing --json-config /etc/chef/targets/10.0.0.4-inspec.json
+describe crontab.commands('/opt/inspec/bin/inspec exec https://github.com/mattray/uptime-profile -t ssh://test@10.0.0.4 --port=22 --password=testing --json-config /etc/chef/targets/10.0.0.4-inspec.json') do
+  its('minutes') { should cmp '*/7' }
+  its('hours') { should cmp '*' }
+  its('days') { should cmp '*' }
+  its('weekdays') { should cmp '*' }
+  its('months') { should cmp '*' }
+end
 
-# describe crontab.commands('/opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json') do
-#   its('minutes') { should cmp '45' }
-#   its('hours') { should cmp '*' }
-#   its('days') { should cmp '*' }
-#   its('weekdays') { should cmp '*' }
-#   its('months') { should cmp '*' }
-# end
-
-# describe crontab.commands('/opt/chef/embedded/bin/inspec exec https://github.com/mattray/uptime-profile --json-config /etc/chef/inspec.json') do
-#   its('minutes') { should cmp '0' }
-#   its('hours') { should cmp '*/4' }
-#   its('days') { should cmp '*' }
-#   its('weekdays') { should cmp '*' }
-#   its('months') { should cmp '*' }
-# end
+# Chef Name: 10.0.0.4::ssh-baseline
+# */7 */2 * * * /opt/inspec/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz -t ssh://test@10.0.0.4 --port=22 --password=testing --json-config /etc/chef/targets/10.0.0.4-inspec.json
+describe crontab.commands('/opt/inspec/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz -t ssh://test@10.0.0.4 --port=22 --password=testing --json-config /etc/chef/targets/10.0.0.4-inspec.json') do
+  its('minutes') { should cmp '*/7' }
+  its('hours') { should cmp '*/2' }
+  its('days') { should cmp '*' }
+  its('weekdays') { should cmp '*' }
+  its('months') { should cmp '*' }
+end

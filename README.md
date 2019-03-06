@@ -1,14 +1,14 @@
 # inspec-cron
 
-Schedules InSpec runs via cron. This is useful when the chef-client is not daemonized but you still wish to periodically run compliance scans. This cookbook leverages the [audit cookbook's inspec recipe](https://github.com/chef-cookbooks/audit/blob/master/recipes/inspec.rb) to ensure InSpec is installed.
+Schedules InSpec runs via cron. This is useful when the chef-client is not daemonized but you still wish to periodically run compliance scans. This cookbook leverages the [chef-ingredient cookbook's inspec recipe](https://github.com/chef-cookbooks/chef-ingredient) to ensure InSpec is installed.
 
 # Attributes from other cookbooks
 
 If you want to specify the version of InSpec, set the following:
 
-    node['audit']['inspec_version'] = '3.6.6'
+    node['inspec-cron']['version'] = '3.7.1'
 
-If you are using the [chef-client](https://github.com/cookbooks/chef-client/) or [audit](https://github.com/chef-cookbooks/audit) cookbooks the following attributes will be reused if available. If not, you'll need to set them accordingly.
+If you are using the [chef-client](https://github.com/cookbooks/chef-client/) cookbook the following attributes will be reused if available. If not, you'll need to set them accordingly.
 
 Location of the InSpec configuration file.
 
@@ -58,7 +58,6 @@ default['inspec-cron']['profiles'] = {
 
 Which produces cron entries like this:
 
-
     # Chef Name: linux-patch-baseline
     15 */6 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json
     # Chef Name: ssh-baseline
@@ -66,33 +65,33 @@ Which produces cron entries like this:
 
 ## targets
 
-This recipe configures the node to scan other machines with InSpec profiles. It iterates over a hash of hosts with settings specific to the node and a hash of the profiles and settings to use. Here is an example of a hash for scanning 2 nodes with 2 profiles with their own cron settings.
+This recipe configures the node to scan other machines with InSpec profiles. It iterates over a hash of nodes with settings specific to the node and a hash of the profiles and settings to use. Here is an example of a hash for scanning 2 nodes with profiles with their own cron settings.
 
 ```ruby
-default['inspec-cron']['targets] = {
-
-  'linux-patch-baseline': {
-    'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip',
-    'minute': '15',
-    'hour': '*/6'
+default['inspec-cron']['targets'] = {
+  '10.0.0.2': {
+    'profiles': {
+      'uptime': {
+        'url': 'https://github.com/mattray/uptime-profile',
+        'minute': '*/10',
+      },
+    },
   },
-  'ssh-baseline': {
-    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz',
-    'minute': '45'
+  '10.0.0.3': {
+    'environment': 'foo',
+    'password': 'testing',
+    'profiles': {
+      'linux-patch-baseline': {
+        'url': 'https://github.com/dev-sec/linux-patch-baseline/',
+      },
+      'uptime': {
+        'url': 'https://github.com/mattray/uptime-profile',
+        'minute': '*/5',
+      },
+    },
   }
-
-  'linux-patch-baseline': {
-    'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip',
-    'minute': '15',
-    'hour': '*/6'
-  },
-  'ssh-baseline': {
-    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz',
-    'minute': '45'
-  }
-
 }
-
+```
 
 # NEXT STEPS
 ## alternate reporters

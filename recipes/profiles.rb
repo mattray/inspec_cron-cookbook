@@ -3,11 +3,14 @@
 # Recipe:: profiles
 #
 
-include_recipe 'audit::inspec'
+chef_ingredient 'inspec' do
+  version node['inspec-cron']['version']
+  platform_version_compatibility_mode true
+end
 
 node['inspec-cron']['profiles'].each do |name, profile|
   # sort out the command
-  command = node['inspec-cron']['inspec']['path']
+  command = node['inspec-cron']['path']
   command += " exec #{profile['url']}"
   command += " --json-config #{node['inspec-cron']['conf_dir']}/#{node['inspec-cron']['conf_file']}"
 
