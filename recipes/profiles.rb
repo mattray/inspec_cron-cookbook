@@ -3,13 +3,14 @@
 # Recipe:: profiles
 #
 
-include_recipe 'audit::inspec'
-
-splay = 0
+chef_ingredient 'inspec' do
+  version node['inspec-cron']['version']
+  platform_version_compatibility_mode true
+end
 
 node['inspec-cron']['profiles'].each do |name, profile|
   # sort out the command
-  command = node['inspec-cron']['inspec']['path']
+  command = node['inspec-cron']['path']
   command += " exec #{profile['url']}"
   command += " --json-config #{node['inspec-cron']['conf_dir']}/#{node['inspec-cron']['conf_file']}"
 
@@ -21,7 +22,7 @@ node['inspec-cron']['profiles'].each do |name, profile|
   weekday = node['inspec-cron']['cron']['weekday']
   month = node['inspec-cron']['cron']['month']
   # if the profile hash sets anything, blank all the of the fields
-  if profile['minute'] or profile['hour'] or profile['day'] or profile['weekday'] or profile['month']
+  if profile['minute'] || profile['hour'] || profile['day'] || profile['weekday'] || profile['month']
     minute = '*'
     hour = '*'
     day = '*'

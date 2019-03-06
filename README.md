@@ -1,14 +1,14 @@
 # inspec-cron
 
-Schedules InSpec runs via cron. This is useful when the chef-client is not daemonized but you still wish to periodically run compliance scans. This cookbook leverages the [audit cookbook's inspec recipe](https://github.com/chef-cookbooks/audit/blob/master/recipes/inspec.rb) to ensure InSpec is installed.
+Schedules InSpec runs via cron. This is useful when the chef-client is not daemonized but you still wish to periodically run compliance scans. This cookbook leverages the [chef-ingredient cookbook's inspec recipe](https://github.com/chef-cookbooks/chef-ingredient) to ensure InSpec is installed.
 
 # Attributes from other cookbooks
 
 If you want to specify the version of InSpec, set the following:
 
-    node['audit']['inspec_version'] = '3.6.6'
+    node['inspec-cron']['version'] = '3.7.1'
 
-If you are using the [chef-client](https://github.com/cookbooks/chef-client/) or [audit](https://github.com/chef-cookbooks/audit) cookbooks the following attributes will be reused if available. If not, you'll need to set them accordingly.
+If you are using the [chef-client](https://github.com/cookbooks/chef-client/) cookbook the following attributes will be reused if available. If not, you'll need to set them accordingly.
 
 Location of the InSpec configuration file.
 
@@ -32,7 +32,7 @@ Writes out `/etc/chef/inspec.json` configuration file, templatized with the rele
 
 ## profiles
 
-This recipe iterates over a hash of compliance profiles and their settings to create cron jobs to `inspec exec` them. The default is to run every 12 hours, but you may provide your own cron schedule within the hash or override the defaults. If you are running multiple profiles with the same start consider setting the `node['inspec-cron']['splay']` to spread them out.
+This recipe iterates over a hash of compliance profiles and their settings to create cron jobs to `inspec exec` them. The default is to run every 12 hours, but you may provide your own cron schedule within the hash or override the defaults.
 
     node['inspec-cron']['cron']['minute'] = '0'
     node['inspec-cron']['cron']['hour'] = '*/12'
@@ -58,23 +58,47 @@ default['inspec-cron']['profiles'] = {
 
 Which produces cron entries like this:
 
-
     # Chef Name: linux-patch-baseline
     15 */6 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json
     # Chef Name: ssh-baseline
     45 * * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json
 
+## targets
+
+This recipe configures the node to scan other machines with InSpec profiles. It iterates over a hash of nodes with settings specific to the node and a hash of the profiles and settings to use. Here is an example of a hash for scanning 2 nodes with profiles with their own cron settings.
+
+```ruby
+default['inspec-cron']['targets'] = {
+  '10.0.0.2': {
+    'profiles': {
+      'uptime': {
+        'url': 'https://github.com/mattray/uptime-profile',
+        'minute': '*/10',
+      },
+    },
+  },
+  '10.0.0.3': {
+    'environment': 'foo',
+    'password': 'testing',
+    'profiles': {
+      'linux-patch-baseline': {
+        'url': 'https://github.com/dev-sec/linux-patch-baseline/',
+      },
+      'uptime': {
+        'url': 'https://github.com/mattray/uptime-profile',
+        'minute': '*/5',
+      },
+    },
+  }
+}
+```
+
 # NEXT STEPS
-
-## bastion recipe
-
-This recipe configures the node as an InSpec bastion node to scan other machines. It iterates over a hash of IP address or hostnames with settings specific to the node and a hash of the profiles and settings to use
-
+## alternate reporters
  Report to Automate via Chef Server
  # NOTE: Must have Compliance Integrated w/ Chef Server
  ['audit']['reporter'] = 'chef-server-automate'
  ['audit']['fetcher'] = 'chef-server'
 
-## alternate reporters
 The inspec.json can be configured to direct output through a Chef server on to Automate, negating the need for direct Automate access by nodes.
 https://github.com/chef-cookbooks/audit/blob/master/docs/supported_configuration.md

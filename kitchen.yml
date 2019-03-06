@@ -25,3 +25,9 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/conf
+  - name: targets
+    provisioner:
+      policyfile: policyfiles/targets.rb
+    verifier:
+      inspec_tests:
+        - test/integration/targets
