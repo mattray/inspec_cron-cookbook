@@ -8,6 +8,7 @@ If you want to specify the version of InSpec, set the following:
 
     node['inspec-cron']['version'] = '3.7.1'
 
+
 If you are using the [chef-client](https://github.com/cookbooks/chef-client/) cookbook the following attributes will be reused if available. If not, you'll need to set them accordingly.
 
 Location of the InSpec configuration file.

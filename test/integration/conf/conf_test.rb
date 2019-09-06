@@ -1,6 +1,6 @@
 # # encoding: utf-8
 
-# Inspec test for recipe inspec-cron::inspec-json
+# Inspec test for recipe inspec_cron::inspec-json
 
 describe directory('/tmp/inspec') do
   it { should exist }

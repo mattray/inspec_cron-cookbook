@@ -2,19 +2,19 @@ name 'targets'
 
 default_source :supermarket
 
-cookbook 'inspec-cron', path: '..'
+cookbook 'inspec_cron', path: '..'
 
-run_list 'inspec-cron::targets'
+run_list 'inspec_cron::targets'
 
-default['inspec-cron']['server_url'] = 'https://ndnd/data-collector/v0/'
-default['inspec-cron']['token'] = '8ZzgdoqAPRWsW4XOHRiFx7Kbobk='
-default['inspec-cron']['insecure'] = true
+default['inspec_cron']['server_url'] = 'https://ndnd/data-collector/v0/'
+default['inspec_cron']['token'] = '8ZzgdoqAPRWsW4XOHRiFx7Kbobk='
+default['inspec_cron']['insecure'] = true
 
-default['inspec-cron']['version'] = '3.7.1'
+default['inspec_cron']['version'] = '3.7.1'
 
-default['inspec-cron']['targets_user'] = 'test'
+default['inspec_cron']['targets_user'] = 'test'
 
-default['inspec-cron']['targets'] = {
+default['inspec_cron']['targets'] = {
   '10.0.0.2': {
     'key': '/tmp/test.id_rsa',
     'profiles': {

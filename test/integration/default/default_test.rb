@@ -1,6 +1,6 @@
 # # encoding: utf-8
 
-# Inspec test for recipe inspec-cron::default
+# Inspec test for recipe inspec_cron::default
 
 describe directory('/etc/chef') do
   it { should exist }
