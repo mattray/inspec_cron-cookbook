@@ -1,13 +1,30 @@
-# location of config files, reuse the attribute from the chef_client cookbook
-default['inspec_cron']['conf_dir'] = if node.to_hash.dig('chef_client', 'conf_dir')
-                                       node['chef_client']['conf_dir']
-                                     else
-                                       '/etc/chef'
-                                     end
-default['inspec_cron']['conf_file'] = 'inspec.json'
-default['inspec_cron']['version'] = '3.7.1'
-default['inspec_cron']['path'] = '/opt/inspec/bin/inspec'
+# defaults are from Chef node settings or provided by the chef_client cookbook
 
+# INSPEC_JSON
+# location of config files, reuse the attribute from the chef_client cookbook
+default['inspec_cron']['conf_file'] = if node.to_hash.dig('chef_client', 'conf_dir')
+                                        node['chef_client']['conf_dir'] + '/inspec.json'
+                                      else
+                                        '/etc/chef/inspec.json'
+                                      end
+default['inspec_cron']['name'] = node['name']
+default['inspec_cron']['uuid'] = node['chef_guid']
+default['inspec_cron']['environment'] = node['chef_environment']
+default['inspec_cron']['insecure'] = if node.to_hash.dig('audit', 'insecure')
+                                       node['audit']['insecure']
+                                     else
+                                       false
+                                     end
+default['inspec_cron']['server_url'] = if node.to_hash.dig('chef_client', 'config', 'data_collector.server_url')
+                                         node['chef_client']['config']['data_collector.server_url']
+                                       end
+default['inspec_cron']['token'] = if node.to_hash.dig('chef_client', 'config', 'data_collector.token')
+                                    node['chef_client']['config']['data_collector.token']
+                                  end
+
+# INSPEC_CRONTAB
+default['inspec_cron']['version'] = '4.16.0'
+default['inspec_cron']['path'] = '/opt/inspec/bin/inspec'
 # default cron times for unscheduled profiles
 default['inspec_cron']['cron']['minute'] = '0'
 default['inspec_cron']['cron']['hour'] = '*/12'
@@ -15,17 +32,6 @@ default['inspec_cron']['cron']['day'] = '*'
 default['inspec_cron']['cron']['weekday'] = '*'
 default['inspec_cron']['cron']['month'] = '*'
 
-# manage connections to Automate
-default['inspec_cron']['environment'] = '_default'
-# reuse the attribute from the chef_client cookbook
-default['inspec_cron']['server_url'] = if node.to_hash.dig('chef_client', 'config', 'data_collector.server_url')
-                                         node['chef_client']['config']['data_collector.server_url']
-                                       end
-# reuse the attribute from the chef_client cookbook
-default['inspec_cron']['token'] = if node.to_hash.dig('chef_client', 'config', 'data_collector.token')
-                                    node['chef_client']['config']['data_collector.token']
-                                  end
-default['inspec_cron']['insecure'] = false
 
 default['inspec_cron']['profiles'] = {}
 

@@ -5,6 +5,7 @@ driver:
 provisioner:
   name: chef_zero
   always_update_cookbooks: true
+  deprecations_as_errors: true
 
 verifier:
   name: inspec
@@ -19,9 +20,18 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/default
+  - name: inspec_json
+    provisioner:
+      policyfile: policyfiles/conf.rb
+    verifier:
+      inspec_tests:
+        - test/integration/inspec_json
   - name: conf
     provisioner:
       policyfile: policyfiles/conf.rb
+    attributes:
+      inspec_cron:
+        conf_file: /tmp/inspec/inspec.json
     verifier:
       inspec_tests:
         - test/integration/conf

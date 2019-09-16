@@ -3,20 +3,11 @@
 # Recipe:: inspec-json
 #
 
-dir = node['inspec_cron']['conf_dir']
-
-directory dir do
-  recursive true
-end
-
-# write the inspec.json
-template "#{dir}/#{node['inspec_cron']['conf_file']}" do
-  source 'inspec.json.erb'
-  mode '0700'
-  variables(environment: node['chef_environment'],
-            insecure: node['inspec_cron']['insecure'],
-            node_name: node['name'],
-            node_uuid: node['chef_guid'],
-            token: node['inspec_cron']['token'],
-            url: node['inspec_cron']['server_url'])
+inspec_json node['inspec_cron']['conf_file'] do
+  node_name node['inspec_cron']['name']
+  node_uuid node['inspec_cron']['uuid']
+  environment node['inspec_cron']['environment']
+  insecure node['inspec_cron']['insecure']
+  server_url node['inspec_cron']['server_url']
+  token node['inspec_cron']['token']
 end
