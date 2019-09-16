@@ -20,13 +20,13 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/default
-  - name: inspec_json
+  - name: inspec_json # default inspec.json
     provisioner:
       policyfile: policyfiles/conf.rb
     verifier:
       inspec_tests:
         - test/integration/inspec_json
-  - name: conf
+  - name: inspec_conf # modified inspec.json
     provisioner:
       policyfile: policyfiles/conf.rb
     attributes:
