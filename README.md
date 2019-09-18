@@ -8,12 +8,11 @@ If you want to specify the version of InSpec, set the following:
 
     node['inspec-cron']['version'] = '3.7.1'
 
-
 If you are using the [chef-client](https://github.com/cookbooks/chef-client/) cookbook the following attributes will be reused if available. If not, you'll need to set them accordingly.
 
 Location of the InSpec configuration file.
 
-    node['inspec-cron']['conf_dir'] = node['chef_client']['conf_dir']
+    node['inspec-cron']['conf_file] = node['chef_client']['conf_dir']
 
 Automate URL and token for reporting.
 
@@ -29,7 +28,7 @@ This includes the `inspec-json` and `profiles` recipes. They are separate in cas
 
 ## inspec-json
 
-Writes out `/etc/chef/inspec.json` configuration file, templatized with the relevant attributes. The location and filename may be overridden with `node['inspec-cron']['conf_dir']` and `node['inspec-cron']['conf_file']` respectively.
+Writes out `/etc/chef/inspec.json` configuration file, templatized with the relevant attributes. The location and filename may be overridden with `node['inspec-cron']['conf_file']`.
 
 ## profiles
 
@@ -59,14 +58,18 @@ default['inspec-cron']['profiles'] = {
 
 Which produces cron entries like this:
 
-    # Chef Name: linux-patch-baseline
+    # Chef Name: inspec_cron: linux-patch-baseline
     15 */6 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json
-    # Chef Name: ssh-baseline
+    # Chef Name: inspec_cron: ssh-baseline
     45 * * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json
 
 ## targets
 
 This recipe configures the node to scan other machines with InSpec profiles. It iterates over a hash of nodes with settings specific to the node and a hash of the profiles and settings to use. Here is an example of a hash for scanning 2 nodes with profiles with their own cron settings.
+
+default['inspec_cron']['targets']['list'] = false
+key becomes the name
+list is another attribute
 
 ```ruby
 default['inspec-cron']['targets'] = {

@@ -19,6 +19,7 @@ suites:
       policyfile: policyfiles/default.rb
     verifier:
       inspec_tests:
+        - test/integration/inspec_json
         - test/integration/default
   - name: inspec_json # default inspec.json
     provisioner:
