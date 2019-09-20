@@ -3,7 +3,6 @@ resource_name :inspec_cron
 property :profile_name, String, name_property: true, required: true
 property :profile_url, String
 property :node_name, String
-property :inspec_uuid, String
 property :inspec_json, String, required: true
 property :inspec_path, String, default: '/opt/chef/embedded/bin/inspec'
 property :minute, String
@@ -14,23 +13,6 @@ property :weekday, String
 
 action :create do
   json_config = new_resource.inspec_json
-
-  # sort out the node_uuid file
-  file_inspec_uuid = ::File.dirname(json_config) + '/inspec_uuid'
-
-  inspec_uuid = if new_resource.inspec_uuid
-                new_resource.inspec_uuid
-              elsif File.exist?(file_inspec_uuid) # read existing file
-                File.read(file_inspec_uuid)
-              else # generate a uuid
-                SecureRandom.uuid
-              end
-
-  file file_inspec_uuid do
-    content inspec_uuid
-    sensitive true
-    not_if { ::File.exist?(::File.dirname(file_inspec_uuid) + '/chef_guid') }
-  end
 
   command = new_resource.inspec_path
   command += " exec #{new_resource.profile_url}"
