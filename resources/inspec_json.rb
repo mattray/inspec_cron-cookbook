@@ -19,18 +19,19 @@ action :create do
   end
 
   # sort out the node_uuid file
-  file_inspec_uuid = dir + '/inspec_uuid'
+  file_inspec_uuid = dir + '/node_uuid'
 
   inspec_uuid = if new_resource.node_uuid
                   new_resource.node_uuid
-                elsif File.exist?(file_inspec_uuid) # read existing file
-                  File.read(file_inspec_uuid)
+                elsif ::File.exist?(file_inspec_uuid) # read existing file
+                  ::File.read(file_inspec_uuid)
                 else # generate a uuid
                   SecureRandom.uuid
                 end
 
   file file_inspec_uuid do
     content inspec_uuid
+    mode '0700'
     sensitive true
     not_if { ::File.exist?("#{dir}/chef_guid") }
   end
