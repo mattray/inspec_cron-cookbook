@@ -6,8 +6,8 @@ cookbook 'inspec_cron', path: '..'
 
 run_list 'inspec_cron::targets'
 
-default['inspec_cron']['server_url'] = 'https://ndnd/data-collector/v0/'
-default['inspec_cron']['token'] = '8ZzgdoqAPRWsW4XOHRiFx7Kbobk='
+default['chef_client']['config']['data_collector.server_url'] = 'https://automate.example.com/data-collector/v0/'
+default['inspec_cron']['token'] = '35V9X1VO0VRSeUjukPmBsihvwXI='
 default['inspec_cron']['insecure'] = true
 
 default['inspec_cron']['version'] = '3.7.1'
