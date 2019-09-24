@@ -26,7 +26,7 @@ default['inspec_cron']['token'] = if node.to_hash.dig('chef_client', 'config', '
 default['inspec_cron']['version'] = nil
 default['inspec_cron']['channel'] = :stable
 default['inspec_cron']['package_source'] = nil
-default['inspec_cron']['path'] = '/opt/inspec/bin/inspec'
+default['inspec_cron']['path'] = '/opt/chef/embedded/bin/inspec'
 
 # default cron times for unscheduled profiles
 default['inspec_cron']['cron']['minute'] = '0'
@@ -39,6 +39,8 @@ default['inspec_cron']['profiles'] = {}
 
 # defaults for targets
 default['inspec_cron']['targets'] = {}
+default['inspec_cron']['target_list'] = []
+default['inspec_cron']['target_profiles'] = []
 # defaults are oriented around SSH, other settings could be added
 default['inspec_cron']['targets_key'] = nil
 default['inspec_cron']['targets_password'] = nil
