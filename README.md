@@ -70,7 +70,11 @@ Which produces cron entries like this:
 
 ## targets
 
-This recipe configures the node to scan other machines with InSpec profiles. It iterates over a hash of nodes with settings specific to the node and a hash of the profiles and settings to use. Here is an example of a hash for scanning 2 nodes with profiles with their own cron settings.
+This recipe configures the node to scan other machines with InSpec profiles.
+
+### individual targets
+
+A hash of nodes with settings specific to each and a hash of the profiles and settings to use is iterated across. Here is an example of a hash for scanning 2 nodes with profiles with their own cron settings.
 
 ```ruby
 default['inspec-cron']['targets'] = {
@@ -96,6 +100,52 @@ default['inspec-cron']['targets'] = {
     },
   }
 }
+```
+
+This produces the following `crontab` entry:
+```
+# Chef Name: inspec-cron: 10.0.0.2: uptime
+*/10 * * * * /opt/chef/embedded/bin/inspec exec https://github.com/mattray/uptime-profile --json-config /etc/chef/targets/10.0.0.2/inspec.json
+# Chef Name: inspec-cron: 10.0.0.3: linux-patch-baseline
+* */12 * * * /opt/chef/embedded/bin/inspec exec https://github.com/mattray/linux-patch-baseline --json-config /etc/chef/targets/10.0.0.3/inspec.json
+# Chef Name: inspec-cron: 10.0.0.3: uptime
+* */12 * * * /opt/chef/embedded/bin/inspec exec https://github.com/mattray/uptime-profile --json-config /etc/chef/targets/10.0.0.3/inspec.json
+```
+
+### target lists
+
+If you have many nodes that will behave the same, you may manage them through attributes similar to this:
+
+```ruby
+default['inspec_cron']['target_list'] =   ['10.0.0.12','10.0.0.13']
+default['inspec_cron']['target_settings'] = {
+                                             'environment': 'legacy',
+                                             'key': '/tmp/test.id_rsa',
+                                             'user': 'auditor',
+                                             'hour': '4'
+                                            }
+default['inspec_cron']['target_profiles'] = {
+  'linux-patch-baseline': {
+    'url': 'https://github.com/dev-sec/linux-patch-baseline/',
+    'minute': '*/7',
+    'hour': '*/2',
+  },
+  'ssh-baseline': {
+    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz'
+  },
+}
+```
+
+This produces the following `crontab` entry:
+```
+# Chef Name: inspec-cron: 10.0.0.12: linux-patch-baseline
+*/7 */2 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/ -t ssh://auditor@10.0.0.12 --port=22 -i=/tmp/test.id_rsa --json-config /etc/chef/targets/10.0.0.12/inspec.json
+# Chef Name: inspec-cron: 10.0.0.12: ssh-baseline
+* 4 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz -t ssh://auditor@10.0.0.12 --port=22 -i=/tmp/test.id_rsa --json-config /etc/chef/targets/10.0.0.12/inspec.json
+# Chef Name: inspec-cron: 10.0.0.13: linux-patch-baseline
+*/7 */2 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/ -t ssh://auditor@10.0.0.13 --port=22 -i=/tmp/test.id_rsa --json-config /etc/chef/targets/10.0.0.13/inspec.json
+# Chef Name: inspec-cron: 10.0.0.13: ssh-baseline
+* 4 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz -t ssh://auditor@10.0.0.13 --port=22 -i=/tmp/test.id_rsa --json-config /etc/chef/targets/10.0.0.13/inspec.json
 ```
 
 ## Reporting to Automate via a Chef Server
