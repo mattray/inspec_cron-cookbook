@@ -10,8 +10,6 @@ default['chef_client']['config']['data_collector.server_url'] = 'https://automat
 default['inspec_cron']['token'] = '35V9X1VO0VRSeUjukPmBsihvwXI='
 default['inspec_cron']['insecure'] = true
 
-default['inspec_cron']['version'] = '3.7.1'
-
 default['inspec_cron']['targets_user'] = 'test'
 
 default['inspec_cron']['targets'] = {
