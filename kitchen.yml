@@ -47,6 +47,12 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/targets
+  - name: list
+    provisioner:
+      policyfile: policyfiles/list.rb
+    verifier:
+      inspec_tests:
+        - test/integration/list
   - name: install_chef
     provisioner:
       product_version: 14
