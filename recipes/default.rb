@@ -1,7 +1,8 @@
 #
-# Cookbook:: inspec-cron
+# Cookbook:: inspec_cron
 # Recipe:: default
 #
 
-include_recipe 'inspec-cron::inspec-json'
-include_recipe 'inspec-cron::profiles'
+include_recipe 'inspec_cron::install-inspec'
+include_recipe 'inspec_cron::inspec-json'
+include_recipe 'inspec_cron::profiles'

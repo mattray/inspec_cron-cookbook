@@ -1,18 +1,14 @@
 # inspec-cron
 
-Schedules InSpec runs via cron. This is useful when the chef-client is not daemonized but you still wish to periodically run compliance scans. This cookbook leverages the [chef-ingredient cookbook's inspec recipe](https://github.com/chef-cookbooks/chef-ingredient) to ensure InSpec is installed.
+Schedules InSpec runs via cron. This is useful when the chef-client is not daemonized but you still wish to periodically run compliance scans. This cookbook leverages [chef-ingredient](https://github.com/chef-cookbooks/chef-ingredient) if another version of InSpec is to be installed (it uses the Chef package version by default).
 
 # Attributes from other cookbooks
-
-If you want to specify the version of InSpec, set the following:
-
-    node['inspec-cron']['version'] = '3.7.1'
 
 If you are using the [chef-client](https://github.com/cookbooks/chef-client/) cookbook the following attributes will be reused if available. If not, you'll need to set them accordingly.
 
 Location of the InSpec configuration file.
 
-    node['inspec-cron']['conf_dir'] = node['chef_client']['conf_dir']
+    node['inspec-cron']['conf_file] = node['chef_client']['conf_dir']
 
 Automate URL and token for reporting.
 
@@ -24,11 +20,20 @@ Automate URL and token for reporting.
 
 ## default
 
-This includes the `inspec-json` and `profiles` recipes. They are separate in case you do not wish to generate an inspec.json file.
+This includes the `install-inspec`, `inspec-json`, and `profiles` recipes. They are separate in case you do not wish to generate an inspec.json file.
+
+## install-inspec
+
+If you want to specify the version of InSpec or use a provided package, include this recipe and set either of the following:
+
+    node['inspec-cron']['version']
+    node['inspec_cron']['package_source']
+
+Update the `node['inspec_cron']['path']` accordingly.
 
 ## inspec-json
 
-Writes out `/etc/chef/inspec.json` configuration file, templatized with the relevant attributes. The location and filename may be overridden with `node['inspec-cron']['conf_dir']` and `node['inspec-cron']['conf_file']` respectively.
+Writes out `/etc/chef/inspec.json` configuration file, templatized with the relevant attributes. The location and filename may be overridden with `node['inspec-cron']['conf_file']`.
 
 ## profiles
 
@@ -58,9 +63,9 @@ default['inspec-cron']['profiles'] = {
 
 Which produces cron entries like this:
 
-    # Chef Name: linux-patch-baseline
+    # Chef Name: inspec_cron: HOSTNAME: linux-patch-baseline
     15 */6 * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip --json-config /etc/chef/inspec.json
-    # Chef Name: ssh-baseline
+    # Chef Name: inspec_cron: HOSTNAME: ssh-baseline
     45 * * * * /opt/chef/embedded/bin/inspec exec https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz --json-config /etc/chef/inspec.json
 
 ## targets

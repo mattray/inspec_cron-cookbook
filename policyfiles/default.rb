@@ -2,16 +2,14 @@ name 'default'
 
 default_source :supermarket
 
-cookbook 'inspec-cron', path: '..'
+cookbook 'inspec_cron', path: '..'
 
-run_list 'chef-client::config', 'inspec-cron::default'
+run_list 'chef-client::config', 'inspec_cron::default'
 
-default['chef_client']['config']['data_collector.server_url'] = 'https://ndnd/data-collector/v0/'
-default['chef_client']['config']['data_collector.token'] = '8ZzgdoqAPRWsW4XOHRiFx7Kbobk='
+default['chef_client']['config']['data_collector.server_url'] = 'https://automate.example.com/data-collector/v0/'
+default['chef_client']['config']['data_collector.token'] = '35V9X1VO0VRSeUjukPmBsihvwXI='
 
-default['inspec-cron']['version'] = '3.7.1'
-
-default['inspec-cron']['profiles'] = {
+default['inspec_cron']['profiles'] = {
   'linux-patch-baseline': {
     'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip',
     'minute': '15',
@@ -26,5 +24,5 @@ default['inspec-cron']['profiles'] = {
   },
 }
 
-default['inspec-cron']['cron']['hour'] = '*/4'
-default['inspec-cron']['insecure'] = true
+default['inspec_cron']['cron']['hour'] = '*/4'
+default['inspec_cron']['insecure'] = true
