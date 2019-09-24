@@ -11,6 +11,6 @@ This file is used to list changes made in each version of the inspec_cron cookbo
 - renamed to inspec_cron
 - updated minimum Chef version to 14
 - inspec_json Custom Resource
-- add support for InSpec package_source
-- target-wide cron vs. profile-wide
-- audit-artifactory support
+- inspec_cron Custom Resource
+- inspec_target Custom Resource
+- add support for InSpec package_source and version

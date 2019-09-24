@@ -9,8 +9,6 @@ run_list 'chef-client::config', 'inspec_cron::default'
 default['chef_client']['config']['data_collector.server_url'] = 'https://automate.example.com/data-collector/v0/'
 default['chef_client']['config']['data_collector.token'] = '35V9X1VO0VRSeUjukPmBsihvwXI='
 
-default['inspec_cron']['version'] = '3.7.1'
-
 default['inspec_cron']['profiles'] = {
   'linux-patch-baseline': {
     'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip',

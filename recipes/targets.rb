@@ -3,11 +3,6 @@
 # Recipe:: targets
 #
 
-chef_ingredient 'inspec' do
-  version node['inspec_cron']['version']
-  platform_version_compatibility_mode true
-end
-
 # each target has settings
 node['inspec_cron']['targets'].each do |target_name, settings|
   # and the profiles within the settings may have additional settings

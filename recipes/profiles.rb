@@ -3,11 +3,6 @@
 # Recipe:: profiles
 #
 
-chef_ingredient 'inspec' do
-  version node['inspec_cron']['version']
-  platform_version_compatibility_mode true
-end
-
 # iterate over the profiles
 node['inspec_cron']['profiles'].each do |name, profile|
   inspec_cron name do

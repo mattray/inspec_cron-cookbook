@@ -3,5 +3,6 @@
 # Recipe:: default
 #
 
+include_recipe 'inspec_cron::install-inspec'
 include_recipe 'inspec_cron::inspec-json'
 include_recipe 'inspec_cron::profiles'
