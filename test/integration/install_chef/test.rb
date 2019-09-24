@@ -7,7 +7,7 @@ describe command('inspec') do
 end
 
 describe command('/opt/chef/embedded/bin/inspec --version') do
-  its ('stdout') { should match /^3.9.3$/ }
+  its('stdout') { should match /^3.9.3$/ }
 end
 
 describe package('inspec') do

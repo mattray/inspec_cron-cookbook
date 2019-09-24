@@ -7,7 +7,7 @@ describe command('inspec') do
 end
 
 describe command('inspec --version') do
-  its ('stdout') { should match /^4.17.4$/ }
+  its('stdout') { should match /^4.17.4$/ }
 end
 
 describe package('inspec') do

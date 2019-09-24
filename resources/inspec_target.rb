@@ -1,6 +1,6 @@
 resource_name :inspec_target
 
-property :target_name, String, name_property: true, required: true
+property :target_name, String, name_property: true
 property :target_uuid, String
 property :target_environment, String
 property :target_token, String

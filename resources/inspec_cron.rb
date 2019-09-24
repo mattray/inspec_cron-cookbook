@@ -1,6 +1,6 @@
 resource_name :inspec_cron
 
-property :profile_name, String, name_property: true, required: true
+property :profile_name, String, name_property: true
 property :profile_url, String
 property :node_name, String
 property :inspec_json, String, required: true

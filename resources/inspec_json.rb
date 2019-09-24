@@ -8,7 +8,6 @@ property :insecure, [true, false], default: false
 property :server_url, String, required: true
 property :token, String, required: true
 
-
 action :create do
   json_file = new_resource.file
 

@@ -7,9 +7,9 @@ default['inspec_cron']['conf_file'] = if node.to_hash.dig('chef_client', 'conf_d
                                       else
                                         '/etc/chef/inspec.json'
                                       end
-default['inspec_cron']['name'] = node['name']
+default['inspec_cron']['name'] = node.name
 default['inspec_cron']['uuid'] = node['chef_guid']
-default['inspec_cron']['environment'] = node['chef_environment']
+default['inspec_cron']['environment'] = node.chef_environment
 default['inspec_cron']['insecure'] = if node.to_hash.dig('audit', 'insecure')
                                        node['audit']['insecure']
                                      else
