@@ -2,6 +2,10 @@
 
 # Inspec test for recipe inspec_cron::install-inspec
 
+describe file('/opt/inspec/bin/inspec') do
+  it { should_not exist }
+end
+
 describe command('inspec') do
   it { should_not exist }
 end

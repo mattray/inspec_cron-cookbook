@@ -4,7 +4,7 @@ maintainer_email 'matt@chef.io'
 license 'Apache-2.0'
 description 'Manages InSpec scans via cron.'
 long_description 'Schedules InSpec scans for local or remote hosts via cron.'
-version '0.4.0'
+version '0.5.0'
 chef_version '>= 14.0'
 
 supports 'centos'
