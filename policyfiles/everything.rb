@@ -71,12 +71,12 @@ default['inspec_cron']['targets'] = {
 }
 
 # currently only support 1 list, a hash could be added in the future for multiple lists
-default['inspec_cron']['target_list'] =   ['10.0.0.12','10.0.0.13','10.0.0.14']
+default['inspec_cron']['target_list'] =   ['10.0.0.12', '10.0.0.13', '10.0.0.14']
 default['inspec_cron']['target_settings'] = {
                                              'environment': 'legacy',
                                              'key': '/tmp/test.id_rsa',
                                              'user': 'auditor',
-                                             'hour': '4'
+                                             'hour': '4',
                                             }
 default['inspec_cron']['target_profiles'] = {
   'linux-patch-baseline': {
@@ -85,9 +85,9 @@ default['inspec_cron']['target_profiles'] = {
     'hour': '*/2',
   },
   'ssh-baseline': {
-    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz'
+    'url': 'https://github.com/dev-sec/ssh-baseline/archive/2.3.0.tar.gz',
   },
   'uptime': {
-    'url': 'https://github.com/mattray/uptime-profile'
-  }
+    'url': 'https://github.com/mattray/uptime-profile',
+  },
 }
