@@ -12,12 +12,12 @@ describe command('inspec') do
 end
 
 describe command('inspec --version') do
-  its('stdout') { should match /^4.17.4$/ }
+  its('stdout') { should match /^4.20.10$/ }
 end
 
 describe package('inspec') do
   it { should be_installed }
-  its('version') { should eq '4.17.4-1.el7' }
+  its('version') { should eq '4.20.10-1.el7' }
 end
 
 describe directory('/etc/chef') do

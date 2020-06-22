@@ -1,4 +1,5 @@
 resource_name :inspec_target
+provides :inspec_target
 
 property :target_name, String, name_property: true
 property :target_uuid, String

@@ -20,3 +20,8 @@ This file is used to list changes made in each version of the inspec_cron cookbo
 - support a list of target nodes that all behave the same
 - no longer expect '/opt/inspec/bin/inspec' as the default path, set to '/opt/chef/embedded/bin/inspec'
 - added 'everything' test to verify default and targets recipes together
+
+## 0.5.1
+
+- updated custom resources to account for [breaking Custom Resource change in Chef 16.2](https://discourse.chef.io/t/chef-infra-client-16-2-released/17284)
+- refreshed tests and updated for Chef 15/16
