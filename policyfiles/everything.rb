@@ -6,7 +6,7 @@ cookbook 'inspec_cron', path: '..'
 
 run_list 'inspec_cron::default', 'inspec_cron::targets'
 
-default['inspec_cron']['package_source'] = '/test/inspec-4.17.4-1.el7.x86_64.rpm'
+default['inspec_cron']['package_source'] = '/test/inspec-4.20.10-1.el7.x86_64.rpm'
 default['inspec_cron']['path'] = '/opt/inspec/bin/inspec'
 default['chef_client']['config']['data_collector.server_url'] = 'https://automate.example.com/data-collector/v0/'
 default['inspec_cron']['insecure'] = true

@@ -1,4 +1,5 @@
 resource_name :inspec_json
+provides :inspec_json
 
 property :file, String, name_property: true
 property :node_name, String, required: true

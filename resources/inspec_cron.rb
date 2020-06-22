@@ -1,4 +1,5 @@
 resource_name :inspec_cron
+provides :inspec_cron
 
 property :profile_name, String, name_property: true
 property :profile_url, String

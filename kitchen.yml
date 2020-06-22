@@ -10,10 +10,11 @@ provisioner:
   deprecations_as_errors: true
   chef_license: accept
   product_name: chef
-  product_version: 15
+  product_version: 16
 
 verifier:
   name: inspec
+  color: false
 
 platforms:
   - name: centos-7
@@ -55,7 +56,7 @@ suites:
         - test/integration/list
   - name: install_chef
     provisioner:
-      product_version: 14
+      product_version: 15
       policyfile: policyfiles/install_chef.rb
     verifier:
       inspec_tests:
@@ -66,13 +67,20 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/install_version
-  - name: install_package # you will need test/inspec-4.17.4-1.el7.x86_64.rpm for this test
+  - name: install_package
     provisioner:
       policyfile: policyfiles/install_package.rb
     verifier:
       inspec_tests:
         - test/integration/install_package
-  - name: everything
+  - name: 15everything
+    provisioner:
+      product_version: 15
+      policyfile: policyfiles/everything.rb
+    verifier:
+      inspec_tests:
+        - test/integration/everything
+  - name: 16everything
     provisioner:
       policyfile: policyfiles/everything.rb
     verifier:
